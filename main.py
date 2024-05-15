@@ -1,4 +1,5 @@
-# ==================== [CONFIG] ====================
+
+# ========================================- [CONFIG] -========================================
 # Ram min and max, in mb
 RAM_MIN_MB = 500
 RAM_MAX_MB = 800
@@ -6,12 +7,21 @@ RAM_MAX_MB = 800
 # Name of the server jar file
 SERVER_FILE_NAME = "server.jar"
 
-KEY = "3717817634be42aca1bd9d90d2565ca1"
+# The key for verification, to get a new one set this as a blank string and run the program (it is a uuid4 string)
+KEY = "94c5cdfc02444871972f59c31e24b885"
+
 # Port, what port should we listen on
 PORT = 25564
-# ==================================================
+# ============================================================================================
 
-#tellraw @a " [Antinoid] hi"
+
+
+
+
+
+
+
+
 
 import io
 import subprocess
@@ -21,7 +31,10 @@ import socket
 import select
 import re
 from typing import Optional, Any
+import uuid
 
+def generate_key():
+    return str(uuid.uuid4()).replace("-", "")
 def read_next_kv(p:list[str]):
     if(len(p) < 2):
         return None, None
@@ -71,6 +84,17 @@ def read_in_stream(process:subprocess.Popen):
     except EOFError:
         prnt("Exiting input stream because of Ctrl+C")
 
+
+if(KEY == "" or len(KEY) != 32 or not KEY.isalnum()):
+    print("========================================")
+    print("\nNo valid KEY found, please use:")
+    print(f"\"{generate_key()}\"")
+    print("as a new key.")
+    print("Open \"Wrapper.py\" and paste your new key into")
+    print("the key field in the CONFIG section at the top\n")
+    print("========================================")
+    exit()
+
 prnt("Starting MC Server...")
 mc_process = subprocess.Popen(['java', f'-Xmx{RAM_MAX_MB}M', f'-Xms{RAM_MIN_MB}M', '-jar', f'{SERVER_FILE_NAME}', 'nogui'],
                               stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -88,7 +112,6 @@ input_thread.start()
 
 
 try:
-    prnt("test")
 # MAIN PROGRAM =====================================================================================
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setblocking(False)
