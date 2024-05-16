@@ -115,7 +115,7 @@ try:
 # MAIN PROGRAM =====================================================================================
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setblocking(False)
-    sock.bind(('127.0.0.1', PORT))
+    sock.bind(('0.0.0.0', PORT))
     prnt(f"Listening on port {{{PORT}}}")
     while True:
         if(can_recv(sock)):
