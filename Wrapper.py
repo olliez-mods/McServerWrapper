@@ -66,7 +66,6 @@ def read_out_stream(process:subprocess.Popen, chat_stream:io.StringIO):
             print(output, end="", flush=True)
             match = chat_pattern.search(output)
             if(match and not "<#?=~>" in match.group(2)):
-                prnt(f"Putting a message in: {match.group(2)}")
                 chat_stream.write("<#?=~>")
                 chat_stream.write(match.group(1))
                 chat_stream.write("<#?=~>")
@@ -148,6 +147,7 @@ try:
                 if(key == "SAY"):
                     mc_process.stdin.write(f'tellraw @a \"{value}\"\n')
                     mc_process.stdin.flush()
+                    prnt(f"Sending message \"{value}\"")
                     snd(sock, addr, "DONE")
                     continue
                 if(key == "GET-CHAT"):
