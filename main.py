@@ -10,7 +10,7 @@ SERVER_FILE_NAME = "server.jar"
 # The key for verification, to get a new one set this as a blank string and run the program (it is a uuid4 string)
 KEY = "94c5cdfc02444871972f59c31e24b885"
 
-# Port, what port should we listen on
+# Port, what port should we listen on, (The discord bot will ALWAYS try and reach us on 25564)
 PORT = 25564
 # ============================================================================================
 
@@ -127,8 +127,10 @@ try:
                     continue
 
                 key, value = read_next_kv(p)
-
-                if(key == "status"):
+                if(key == "ping"):
+                    snd(sock, addr, "pong")
+                    continue
+                elif(key == "status"):
                     snd(sock, addr, "NOT SUPPORTED YET")
                     continue
                 elif(key == "key"):
@@ -138,7 +140,6 @@ try:
                 else:
                     snd(sock, addr, f'Unknown "{key}"')
                     continue
-
                 snd(sock, addr, "LOGGED IN")
                 # If we get here, assume correct login
                 key, value = read_next_kv(p)
