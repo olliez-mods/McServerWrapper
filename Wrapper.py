@@ -170,7 +170,7 @@ try:
 
                 snd(sock, addr, "END")
             except Exception as e:
-                prnt(f"We got an error:\n{e}")
+                prnt(f"\n\nWe got an error:\n{e}\n\n", end="")
         else:
             time.sleep(0.1)
 # ==================================================================================================
